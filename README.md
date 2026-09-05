@@ -149,20 +149,23 @@ http://localhost:8000
 
 ## 6. Environment Variables
 
-Create a `.env` file based on `.env.example`:
+Create a `.env` file in the project root (optional):
 
 ```
 GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.0-flash
+PORT=8000
 ```
 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `GEMINI_API_KEY` | Optional | Google Gemini API key for AI-powered fact extraction |
 | `GEMINI_MODEL` | Optional | Override Gemini model (default: `gemini-2.0-flash`) |
+| `PORT` | Optional | HTTP port to run on (default: `8000`). Set automatically by hosting platforms like Render |
 
 **The application works without a Gemini API key** using rule-based fallbacks for fact extraction, missing info detection, and follow-up question generation. AI accuracy is reduced without the key.
 
-> **Never commit your `.env` file.** It is included in `.gitignore`.
+> **Never commit your `.env` file.** The `.gitignore` excludes `.env` and `.env.*`.
 
 ---
 
@@ -260,7 +263,6 @@ patient-triage-assistant/
 ├── app.py                        # Main entry point (python app.py)
 ├── requirements.txt              # Python dependencies
 ├── README.md                     # This file
-├── .env.example                  # Environment template
 ├── .gitignore                    # Git ignore rules
 │
 ├── backend/
