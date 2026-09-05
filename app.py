@@ -1,56 +1,114 @@
 """
 Patient Intake Triage Assistant - Main Entry Point
-Run this file to start the application: python app.py
+Run: python app.py
 """
+import os
+import sys
+import logging
 import uvicorn
 from pathlib import Path
 
+# Ensure the project root is on the path
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from backend.config import HOST, PORT, FRONTEND_DIST
-from backend.api import router
 from backend.database import init_database
 
-# Import FastAPI
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("triage")
+
+# Create FastAPI application
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 
-# Create FastAPI application
 app = FastAPI(
     title="Patient Intake Triage Assistant",
     description="AI-assisted patient intake routing",
     version="1.0.0",
 )
 
-# Include API router
+# Import and register API routes AFTER app creation to avoid circular imports
+from backend.api import router
 app.include_router(router)
 
-# Initialize database on startup
+
 @app.on_event("startup")
 async def startup_event():
-    """Initialize database and other services on startup."""
-    init_database()
-    print("Database initialized successfully")
+    """Initialize database, load rules, and build index on startup."""
+    logger.info("Starting Patient Intake Triage Assistant...")
 
-# Mount static files for frontend (if built)
+    # 1. Initialize SQLite
+    init_database()
+    logger.info("Database initialized")
+
+    # 2. Load rules (happens in rules_engine init)
+    from backend.triage.rules_engine import get_rules_engine
+    engine = get_rules_engine()
+    logger.info(f"Loaded {len(engine.rules)} triage rules")
+
+    # 3. Try to load cached retrieval index (cheap operation)
+    from backend.retrieval.retriever import get_retriever
+    retriever = get_retriever()
+    try:
+        retriever.index.load()
+        logger.info("Loaded cached retrieval index")
+    except Exception:
+        logger.info("No cached index — will build on first query if API key available")
+
+    # 4. Check Gemini availability
+    from backend.config import GEMINI_API_KEY
+    if GEMINI_API_KEY:
+        logger.info("Gemini API key configured")
+    else:
+        logger.warning("GEMINI_API_KEY not set — using rule-based fallbacks only")
+
+    logger.info("Application ready!")
+
+
+# Serve frontend static files
 if FRONTEND_DIST.exists():
-    app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
-    
+    # Mount assets directory
+    assets_dir = FRONTEND_DIST / "assets"
+    if assets_dir.exists():
+        app.mount("/assets", StaticFiles(directory=str(assets_dir)), name="assets")
+
     @app.get("/{full_path:path}")
     async def serve_frontend(full_path: str):
-        """Serve frontend files, falling back to index.html for SPA routing."""
+        """Serve frontend files with SPA fallback."""
+        # Make sure API routes are NOT caught by this catch-all
+        if full_path.startswith("api/"):
+            from fastapi import Request
+            from starlette.exceptions import HTTPException as StarletteHTTPException
+            raise StarletteHTTPException(status_code=404)
+
         file_path = FRONTEND_DIST / full_path
         if file_path.is_file():
-            return FileResponse(file_path)
-        return FileResponse(FRONTEND_DIST / "index.html")
+            return FileResponse(str(file_path))
+        return FileResponse(str(FRONTEND_DIST / "index.html"))
+else:
+    @app.get("/")
+    async def root():
+        return {
+            "message": "Patient Intake Triage Assistant API",
+            "docs": "/docs",
+            "health": "/api/health",
+        }
 
 
 if __name__ == "__main__":
-    print(f"Starting Patient Intake Triage Assistant on http://{HOST}:{PORT}")
-    print("Press Ctrl+C to stop")
+    print(f"\n{'='*60}")
+    print(f"  Patient Intake Triage Assistant")
+    print(f"  Starting on http://{HOST}:{PORT}")
+    print(f"{'='*60}\n")
     uvicorn.run(
         "app:app",
         host=HOST,
         port=PORT,
-        reload=False,  # Disable reload for production
+        reload=False,
         log_level="info",
     )

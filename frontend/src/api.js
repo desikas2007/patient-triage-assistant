@@ -5,12 +5,8 @@
 
 const API_BASE = '/api';
 
-/**
- * Generic API request handler
- */
 async function apiRequest(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
-  
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -18,45 +14,29 @@ async function apiRequest(endpoint, options = {}) {
     },
     ...options,
   };
-  
-  try {
-    const response = await fetch(url, config);
-    
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
-      throw new Error(error.detail || `HTTP error ${response.status}`);
-    }
-    
-    return await response.json();
-  } catch (error) {
-    console.error(`API Error (${endpoint}):`, error);
-    throw error;
+
+  const response = await fetch(url, config);
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+    throw new Error(error.detail || `HTTP error ${response.status}`);
   }
+  return await response.json();
 }
 
-/**
- * Health check
- */
 export async function checkHealth() {
   return apiRequest('/health');
 }
 
-/**
- * Process patient intake
- */
-export async function processTriage(patientText, sessionId = null) {
+export async function processTriage(message, sessionId = null) {
   return apiRequest('/triage', {
     method: 'POST',
     body: JSON.stringify({
-      patient_text: patientText,
+      message: message,
       session_id: sessionId,
     }),
   });
 }
 
-/**
- * Process follow-up answers
- */
 export async function processFollowUp(sessionId, answers) {
   return apiRequest('/follow-up', {
     method: 'POST',
@@ -67,16 +47,10 @@ export async function processFollowUp(sessionId, answers) {
   });
 }
 
-/**
- * Get rule explanation
- */
 export async function getRule(ruleId) {
   return apiRequest(`/rules/${ruleId}`);
 }
 
-/**
- * Reset session
- */
 export async function resetSession(sessionId = null) {
   return apiRequest('/session/reset', {
     method: 'POST',

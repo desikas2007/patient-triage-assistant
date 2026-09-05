@@ -5,42 +5,154 @@
     {
       "rule_id": "FEVER-001",
       "complaint": "fever",
-      "title": "General Fever Assessment",
+      "title": "Low-grade fever, short duration, no red flags",
+      "urgency": "non-urgent",
+      "department": "Primary Care",
+      "required_information": [
+        "temperature reading",
+        "duration of fever",
+        "associated symptoms"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "temperature_below": 101,
+        "no_red_flags": true
+      },
+      "follow_up_questions": [
+        "What is the highest temperature you have recorded?",
+        "How many days have you had the fever?",
+        "Do you have any other symptoms like cough, sore throat, or body aches?",
+        "Are you taking any medications right now?"
+      ],
+      "reasoning": "Low-grade fever (below 101°F) with short duration and no associated red flags can often be managed in primary care.",
+      "escalation_conditions": [
+        "temperature exceeds 101°F",
+        "fever persists more than 2 days"
+      ]
+    },
+    {
+      "rule_id": "FEVER-002",
+      "complaint": "fever",
+      "title": "Moderate fever with associated symptoms",
       "urgency": "semi-urgent",
       "department": "Internal Medicine",
       "required_information": [
         "temperature reading",
         "duration of fever",
         "associated symptoms",
-        "recent travel history",
-        "immunization status"
+        "recent travel history"
       ],
       "red_flags": [
         "fever above 103°F (39.4°C)",
         "fever with stiff neck",
-        "fever with rash",
-        "fever in immunocompromised patient",
-        "fever with difficulty breathing"
+        "fever with rash"
       ],
+      "applicability": {
+        "temperature_range": [101, 103],
+        "no_red_flags": true
+      },
       "follow_up_questions": [
-        "What is the highest temperature recorded?",
+        "What is the highest temperature you have recorded?",
         "How long have you had the fever?",
-        "Do you have any other symptoms like cough, headache, or body aches?",
-        "Have you traveled anywhere recently?",
-        "Are you taking any medications for the fever?"
+        "Do you have a stiff neck, rash, or difficulty breathing?",
+        "Have you traveled anywhere recently?"
       ],
-      "reasoning": "General fever assessment based on temperature, duration, and associated symptoms.",
+      "reasoning": "Moderate fever with associated symptoms requires evaluation in internal medicine to identify potential infection source.",
       "escalation_conditions": [
         "temperature exceeds 103°F",
         "fever persists more than 3 days",
-        "immunocompromised patient",
-        "fever with neurological symptoms"
+        "immunocompromised patient"
+      ]
+    },
+    {
+      "rule_id": "FEVER-003",
+      "complaint": "fever",
+      "title": "High fever with neurological or systemic red flags",
+      "urgency": "urgent",
+      "department": "Emergency Department",
+      "required_information": [
+        "temperature reading",
+        "associated symptoms",
+        "mental status"
+      ],
+      "red_flags": [
+        "fever above 103°F (39.4°C)",
+        "fever with stiff neck",
+        "fever with confusion",
+        "fever in immunocompromised patient"
+      ],
+      "applicability": {
+        "temperature_above": 103,
+        "has_red_flags": true
+      },
+      "follow_up_questions": [
+        "What is your current temperature?",
+        "Are you experiencing confusion, stiff neck, or a rash?",
+        "Are you immunocompromised or on immunosuppressive medications?"
+      ],
+      "reasoning": "High fever with neurological signs suggests possible serious infection requiring emergency evaluation.",
+      "escalation_conditions": [
+        "altered mental status",
+        "signs of sepsis",
+        "fever with seizures"
+      ]
+    },
+    {
+      "rule_id": "FEVER-004",
+      "complaint": "fever",
+      "title": "Fever - insufficient information for safe triage",
+      "urgency": null,
+      "department": null,
+      "required_information": [
+        "temperature reading",
+        "duration of fever",
+        "associated symptoms"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "insufficient_info": true,
+        "missing_temperature": true
+      },
+      "follow_up_questions": [
+        "Do you have a thermometer reading? What is the highest temperature?",
+        "When did the fever start?",
+        "Do you have any other symptoms?"
+      ],
+      "reasoning": "Insufficient information to determine fever severity. Cannot safely apply a triage rule without basic temperature data.",
+      "escalation_conditions": [
+        "patient unable to provide temperature information",
+        "infant or elderly with fever"
       ]
     },
     {
       "rule_id": "INJURY-001",
       "complaint": "injury",
-      "title": "General Injury Assessment",
+      "title": "Minor injury with no red flags",
+      "urgency": "non-urgent",
+      "department": "Primary Care / Urgent Care",
+      "required_information": [
+        "mechanism of injury",
+        "location of injury",
+        "ability to move affected area"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "no_red_flags": true,
+        "severity_not_in": ["severe", "critical"]
+      },
+      "follow_up_questions": [
+        "How did the injury happen?",
+        "Where exactly is the pain?",
+        "Can you move the injured area?",
+        "Is there any swelling or bleeding?"
+      ],
+      "reasoning": "Minor injury with full range of motion and no red flags can be managed in primary care or urgent care.",
+      "escalation_conditions": []
+    },
+    {
+      "rule_id": "INJURY-002",
+      "complaint": "injury",
+      "title": "Moderate injury requiring urgent evaluation",
       "urgency": "urgent",
       "department": "Emergency / Trauma",
       "required_information": [
@@ -53,33 +165,93 @@
       "red_flags": [
         "visible bone or deformity",
         "uncontrolled bleeding",
-        "loss of sensation or movement",
-        "head injury with confusion",
-        "injury to chest or abdomen"
+        "loss of sensation or movement"
       ],
+      "applicability": {
+        "has_red_flags": true,
+        "severity_in": ["severe", "critical"]
+      },
       "follow_up_questions": [
         "How did the injury happen?",
-        "Where exactly is the pain?",
-        "Can you move the affected area?",
-        "Is there any bleeding?",
+        "Can you move the affected area normally?",
+        "Is the bleeding controlled?",
+        "Have you lost any sensation or movement?",
         "When did the injury occur?"
       ],
-      "reasoning": "Injury assessment focusing on mechanism, location, and neurovascular status.",
+      "reasoning": "Injury with possible fracture or significant soft tissue damage requires urgent emergency evaluation.",
       "escalation_conditions": [
         "suspected fracture",
-        "uncontrolled bleeding",
         "loss of consciousness",
         "injury to vital areas"
       ]
     },
     {
+      "rule_id": "INJURY-003",
+      "complaint": "injury",
+      "title": "Head injury with concerning symptoms",
+      "urgency": "urgent",
+      "department": "Emergency Department",
+      "required_information": [
+        "mechanism of injury",
+        "loss of consciousness",
+        "neurological symptoms"
+      ],
+      "red_flags": [
+        "head injury with confusion",
+        "loss of consciousness",
+        "severe headache after head trauma"
+      ],
+      "applicability": {
+        "has_red_flags": true,
+        "severity_in": ["severe", "critical"]
+      },
+      "follow_up_questions": [
+        "Did you lose consciousness at any point?",
+        "Are you feeling confused or disoriented?",
+        "Do you have a severe headache, vomiting, or vision changes?",
+        "How did the head injury happen?"
+      ],
+      "reasoning": "Head injury with neurological symptoms requires emergency evaluation to rule out intracranial injury.",
+      "escalation_conditions": [
+        "prolonged loss of consciousness",
+        "progressive neurological symptoms",
+        "suspected skull fracture"
+      ]
+    },
+    {
+      "rule_id": "INJURY-004",
+      "complaint": "injury",
+      "title": "Injury - mechanism and severity unclear",
+      "urgency": null,
+      "department": null,
+      "required_information": [
+        "mechanism of injury",
+        "location of injury",
+        "ability to move affected area"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "insufficient_info": true
+      },
+      "follow_up_questions": [
+        "Can you describe how the injury happened?",
+        "Where exactly are you experiencing pain or injury?",
+        "Are you able to move normally?"
+      ],
+      "reasoning": "Insufficient information to determine injury severity. Cannot safely route without understanding mechanism and current status.",
+      "escalation_conditions": [
+        "high-energy mechanism of injury",
+        "patient unable to describe the event"
+      ]
+    },
+    {
       "rule_id": "CHEST-001",
       "complaint": "chest_pain",
-      "title": "Chest Pain Assessment",
+      "title": "Chest pain with cardiac red flags",
       "urgency": "urgent",
       "department": "Emergency / Cardiology",
       "required_information": [
-        "pain characteristics (sharp, dull, pressure)",
+        "pain characteristics",
         "radiation of pain",
         "associated symptoms",
         "duration of pain",
@@ -89,71 +261,177 @@
         "chest pain radiating to arm or jaw",
         "shortness of breath with chest pain",
         "sweating and nausea with chest pain",
-        "history of heart disease",
-        "chest pain with dizziness"
+        "history of heart disease"
       ],
+      "applicability": {
+        "has_red_flags": true
+      },
       "follow_up_questions": [
-        "Can you describe the pain (sharp, dull, pressure)?",
+        "Can you describe the pain (sharp, dull, pressure, tightness)?",
         "Does the pain spread to your arm, jaw, or back?",
-        "Are you experiencing shortness of breath?",
-        "Do you feel dizzy or lightheaded?",
-        "Do you have a history of heart problems?"
+        "Are you experiencing shortness of breath, sweating, or nausea?",
+        "Do you have a history of heart problems or high blood pressure?"
       ],
-      "reasoning": "Chest pain requires immediate evaluation to rule out cardiac events.",
+      "reasoning": "Chest pain with reported red-flag features requires urgent evaluation and human review.",
       "escalation_conditions": [
         "pain radiating to arm/jaw",
         "associated shortness of breath",
-        "diaphoresis",
+        "diaphoresis with chest pain",
         "known cardiac history"
+      ]
+    },
+    {
+      "rule_id": "CHEST-002",
+      "complaint": "chest_pain",
+      "title": "Chest pain without cardiac red flags",
+      "urgency": "semi-urgent",
+      "department": "Emergency Department",
+      "required_information": [
+        "pain characteristics",
+        "duration of pain",
+        "associated symptoms"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "no_red_flags": true
+      },
+      "follow_up_questions": [
+        "Can you describe the pain (sharp, dull, pressure)?",
+        "How long have you had the pain?",
+        "Does anything make it better or worse?",
+        "Do you have any shortness of breath or dizziness?"
+      ],
+      "reasoning": "Chest pain without obvious cardiac red flags still requires emergency evaluation but may be lower acuity.",
+      "escalation_conditions": [
+        "new onset chest pain in patient over 40",
+        "chest pain with unexplained weight loss"
+      ]
+    },
+    {
+      "rule_id": "CHEST-003",
+      "complaint": "chest_pain",
+      "title": "Chest pain - information insufficient for safe triage",
+      "urgency": null,
+      "department": null,
+      "required_information": [
+        "pain characteristics",
+        "duration of pain",
+        "associated symptoms"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "insufficient_info": true
+      },
+      "follow_up_questions": [
+        "Can you describe the type of pain you are experiencing?",
+        "When did the chest pain start?",
+        "Are you having any difficulty breathing, sweating, or dizziness?"
+      ],
+      "reasoning": "Chest pain requires thorough evaluation. Insufficient information to determine cardiac risk. Cannot safely apply a triage rule.",
+      "escalation_conditions": [
+        "patient unable to describe symptoms",
+        "chest pain in patient over 50 with unknown history"
       ]
     },
     {
       "rule_id": "BREATH-001",
       "complaint": "breathing_difficulty",
-      "title": "Breathing Difficulty Assessment",
+      "title": "Severe respiratory distress with red flags",
       "urgency": "urgent",
       "department": "Emergency / Pulmonology",
       "required_information": [
         "onset of symptoms",
         "severity of breathlessness",
-        "triggers or alleviating factors",
-        "associated symptoms",
-        "respiratory history"
+        "ability to speak"
       ],
       "red_flags": [
         "severe shortness of breath",
         "cannot speak in full sentences",
         "blue lips or fingernails",
-        "history of asthma or COPD",
-        "sudden onset of breathlessness"
+        "history of asthma or COPD"
       ],
+      "applicability": {
+        "has_red_flags": true,
+        "severity_in": ["severe", "critical"]
+      },
       "follow_up_questions": [
+        "Can you speak in full sentences right now?",
         "When did the breathing difficulty start?",
-        "Can you speak in full sentences?",
-        "Do you have a history of asthma or lung disease?",
-        "Are your lips or fingernails discolored?",
-        "Does anything make it better or worse?"
+        "Do you have a history of asthma, COPD, or other lung conditions?",
+        "Are your lips or fingernails discolored?"
       ],
-      "reasoning": "Breathing difficulty requires rapid assessment to identify respiratory distress.",
+      "reasoning": "Severe breathing difficulty with red flags indicates respiratory distress requiring immediate emergency evaluation.",
       "escalation_conditions": [
-        "SpO2 below 94%",
         "unable to speak in sentences",
         "cyanosis",
         "respiratory rate > 30"
       ]
     },
     {
+      "rule_id": "BREATH-002",
+      "complaint": "breathing_difficulty",
+      "title": "Moderate breathing difficulty",
+      "urgency": "semi-urgent",
+      "department": "Emergency / Pulmonology",
+      "required_information": [
+        "onset of symptoms",
+        "severity of breathlessness",
+        "triggers or alleviating factors",
+        "respiratory history"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "no_red_flags": true,
+        "severity_not_in": ["severe", "critical"]
+      },
+      "follow_up_questions": [
+        "When did the breathing difficulty start?",
+        "Can you identify any triggers (exertion, allergens, cold air)?",
+        "Do you have a history of asthma, allergies, or lung disease?",
+        "Do you have a fever along with the breathing difficulty?"
+      ],
+      "reasoning": "Moderate breathing difficulty without severe red flags requires urgent evaluation but may not be immediately life-threatening.",
+      "escalation_conditions": [
+        "breathing difficulty worsening rapidly",
+        "breathing difficulty with chest pain"
+      ]
+    },
+    {
+      "rule_id": "BREATH-003",
+      "complaint": "breathing_difficulty",
+      "title": "Breathing difficulty - insufficient information",
+      "urgency": null,
+      "department": null,
+      "required_information": [
+        "onset of symptoms",
+        "severity of breathlessness"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "insufficient_info": true
+      },
+      "follow_up_questions": [
+        "When did the breathing difficulty start?",
+        "How severe is it on a scale of 1 to 10?",
+        "Can you speak in full sentences?"
+      ],
+      "reasoning": "Breathing difficulty can range from mild to life-threatening. Insufficient information to determine severity.",
+      "escalation_conditions": [
+        "patient unable to provide information due to distress",
+        "breathing difficulty with inability to speak"
+      ]
+    },
+    {
       "rule_id": "ABDOM-001",
       "complaint": "abdominal_pain",
-      "title": "Abdominal Pain Assessment",
-      "urgency": "semi-urgent",
+      "title": "Abdominal pain with surgical red flags",
+      "urgency": "urgent",
       "department": "Emergency / General Surgery",
       "required_information": [
         "location of pain",
         "onset and duration",
         "pain characteristics",
-        "associated symptoms",
-        "bowel and urine habits"
+        "associated symptoms"
       ],
       "red_flags": [
         "severe sudden abdominal pain",
@@ -162,19 +440,153 @@
         "fever with abdominal pain",
         "inability to pass gas or stool"
       ],
+      "applicability": {
+        "has_red_flags": true,
+        "severity_in": ["severe", "critical"]
+      },
       "follow_up_questions": [
         "Where exactly is the pain located?",
-        "When did the pain start?",
-        "Can you describe the pain (cramping, sharp, burning)?",
+        "When did the pain start and how severe is it?",
         "Have you noticed any blood in your stool or vomit?",
-        "When was your last bowel movement?"
+        "Is your abdomen hard or rigid to the touch?",
+        "Are you able to pass gas or have a bowel movement?"
       ],
-      "reasoning": "Abdominal pain assessment focuses on identifying surgical emergencies.",
+      "reasoning": "Abdominal pain with red flags suggests possible surgical emergency requiring urgent evaluation.",
       "escalation_conditions": [
         "peritoneal signs",
         "GI bleeding",
         "suspected appendicitis",
         "suspected bowel obstruction"
+      ]
+    },
+    {
+      "rule_id": "ABDOM-002",
+      "complaint": "abdominal_pain",
+      "title": "Abdominal pain without red flags",
+      "urgency": "semi-urgent",
+      "department": "Internal Medicine / Emergency Department",
+      "required_information": [
+        "location of pain",
+        "onset and duration",
+        "pain characteristics",
+        "associated symptoms"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "no_red_flags": true,
+        "severity_not_in": ["severe", "critical"]
+      },
+      "follow_up_questions": [
+        "Where exactly is the pain located?",
+        "When did the pain start?",
+        "Can you describe the type of pain (cramping, sharp, burning)?",
+        "Do you have nausea, vomiting, diarrhea, or constipation?"
+      ],
+      "reasoning": "Abdominal pain without red flags still requires evaluation but may be managed less urgently.",
+      "escalation_conditions": [
+        "pain worsening over time",
+        "abdominal pain with unexplained weight loss"
+      ]
+    },
+    {
+      "rule_id": "ABDOM-003",
+      "complaint": "abdominal_pain",
+      "title": "Abdominal pain - insufficient information",
+      "urgency": null,
+      "department": null,
+      "required_information": [
+        "location of pain",
+        "onset and duration",
+        "pain characteristics"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "insufficient_info": true
+      },
+      "follow_up_questions": [
+        "Can you point to where the pain is?",
+        "When did the pain start?",
+        "Can you describe the type of pain?"
+      ],
+      "reasoning": "Abdominal pain has wide differential. Insufficient information to determine severity or route safely.",
+      "escalation_conditions": [
+        "elderly patient with abdominal pain",
+        "abdominal pain in pregnant patient"
+      ]
+    },
+    {
+      "rule_id": "GEN-001",
+      "complaint": "fever",
+      "title": "Fever combined with breathing difficulty - escalate",
+      "urgency": "urgent",
+      "department": "Emergency Department",
+      "required_information": [
+        "temperature reading",
+        "breathing status",
+        "oxygen saturation"
+      ],
+      "red_flags": [
+        "fever with difficulty breathing",
+        "fever above 103°F",
+        "shortness of breath"
+      ],
+      "applicability": {
+        "has_red_flags": true
+      },
+      "follow_up_questions": [
+        "What is your current temperature?",
+        "How is your breathing right now? Are you short of breath?",
+        "Do you have a cough along with the fever?"
+      ],
+      "reasoning": "Fever combined with breathing difficulty suggests possible pneumonia or serious respiratory infection requiring emergency evaluation.",
+      "escalation_conditions": [
+        "SpO2 below 94%",
+        "unable to speak in sentences",
+        "high fever with respiratory distress"
+      ]
+    },
+    {
+      "rule_id": "GEN-002",
+      "complaint": "chest_pain",
+      "title": "Conflicting or unclear symptom presentation",
+      "urgency": null,
+      "department": null,
+      "required_information": [
+        "clear symptom description",
+        "onset",
+        "associated symptoms"
+      ],
+      "red_flags": [],
+      "applicability": {
+        "insufficient_info": true
+      },
+      "follow_up_questions": [
+        "Can you describe your main concern more specifically?",
+        "When did these symptoms start?",
+        "Are you experiencing any other symptoms?"
+      ],
+      "reasoning": "Symptom description is unclear or conflicting. Cannot determine appropriate triage category with confidence.",
+      "escalation_conditions": [
+        "symptoms do not clearly match any category",
+        "patient report is inconsistent"
+      ]
+    },
+    {
+      "rule_id": "GEN-003",
+      "complaint": "other",
+      "title": "Complaint outside supported categories",
+      "urgency": null,
+      "department": null,
+      "required_information": [],
+      "red_flags": [],
+      "applicability": {
+        "always_apply": true
+      },
+      "follow_up_questions": [],
+      "reasoning": "The described complaint does not fall within the supported triage categories (fever, injury, chest pain, breathing difficulty, abdominal pain). This case should be reviewed by a human triage professional.",
+      "escalation_conditions": [
+        "unsupported complaint category",
+        "symptoms outside the rule base"
       ]
     }
   ]

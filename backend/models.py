@@ -2,23 +2,27 @@
 Pydantic models for Patient Intake Triage Assistant.
 Defines request/response schemas for the API.
 """
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from datetime import datetime
 from pydantic import BaseModel, Field
 
 
+# ──────────────────────────────────────────────
 # Request Models
+# ──────────────────────────────────────────────
+
 class PatientIntakeRequest(BaseModel):
     """Request model for patient intake text."""
-    patient_text: str = Field(..., min_length=1, max_length=5000, 
-                            description="Patient description in natural language")
     session_id: Optional[str] = Field(None, description="Optional session ID for continuity")
+    message: str = Field(..., min_length=1, max_length=5000,
+                         description="Patient description in natural language")
 
 
 class FollowUpRequest(BaseModel):
     """Request model for follow-up answers."""
     session_id: str = Field(..., description="Session ID from initial intake")
-    answers: List[str] = Field(..., description="Answers to follow-up questions")
+    answers: Dict[str, str] = Field(...,
+                                     description="Map of question_id to answer text")
 
 
 class SessionResetRequest(BaseModel):
@@ -26,57 +30,46 @@ class SessionResetRequest(BaseModel):
     session_id: Optional[str] = Field(None, description="Session ID to reset")
 
 
+# ──────────────────────────────────────────────
 # Response Models
+# ──────────────────────────────────────────────
+
 class HealthResponse(BaseModel):
     """Response model for health check endpoint."""
     status: str = "ok"
-    version: str = "1.0.0"
-
-
-class StructuredFacts(BaseModel):
-    """Structured facts extracted from patient text."""
-    complaint_category: Optional[str] = None
-    reported_symptoms: List[str] = []
-    reported_duration: Optional[str] = None
-    reported_severity: Optional[str] = None
-    reported_history: List[str] = []
-    unknown_information: List[str] = []
 
 
 class FollowUpQuestion(BaseModel):
     """A single follow-up question."""
     question_id: str
     question_text: str
-    category: str  # e.g., "severity", "duration", "history"
-    priority: str  # "high", "medium", "low"
+    category: str = "general"
+    priority: str = "medium"
 
 
-class TriageRecommendation(BaseModel):
-    """Triage recommendation result."""
-    urgency_level: int = Field(..., ge=1, le=5)
-    urgency_label: str
-    department: str
-    rule_id: Optional[str] = None
-    rule_title: Optional[str] = None
-    reasoning: str
-    requires_human_review: bool = False
+class TriageResult(BaseModel):
+    """Complete triage response returned to the frontend."""
+    status: str = Field(...,
+                        description="complete | follow_up_required | human_review")
+    session_id: str
+
+    # Result fields (populated when status == complete)
+    urgency: Optional[str] = None
+    department: Optional[str] = None
+    rule_ids: List[str] = Field(default_factory=list)
+    reasoning: Optional[str] = None
+
+    # Evidence separation
+    reported: List[str] = Field(default_factory=list,
+                                description="Patient-reported facts")
+    established: List[str] = Field(default_factory=list,
+                                   description="Facts from follow-up")
+    unknown: List[str] = Field(default_factory=list,
+                               description="Still-unknown information")
+
+    # Follow-up questions (when status == follow_up_required)
+    follow_up_questions: List[FollowUpQuestion] = Field(default_factory=list)
+
+    # Escalation
+    escalation: bool = False
     escalation_reason: Optional[str] = None
-
-
-class TriageResponse(BaseModel):
-    """Response model for triage analysis."""
-    session_id: str
-    structured_facts: StructuredFacts
-    follow_up_questions: List[FollowUpQuestion] = []
-    recommendation: Optional[TriageRecommendation] = None
-    requires_follow_up: bool = False
-    status: str = "processing"  # "processing", "follow_up_needed", "completed"
-
-
-class FollowUpResponse(BaseModel):
-    """Response model for follow-up processing."""
-    session_id: str
-    updated_facts: StructuredFacts
-    additional_questions: List[FollowUpQuestion] = []
-    recommendation: Optional[TriageRecommendation] = None
-    status: str = "processing"
