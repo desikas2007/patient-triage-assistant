@@ -1,0 +1,181 @@
+{
+  "version": "1.0.0",
+  "description": "Triage rules for Patient Intake Triage Assistant",
+  "rules": [
+    {
+      "rule_id": "FEVER-001",
+      "complaint": "fever",
+      "title": "General Fever Assessment",
+      "urgency": "semi-urgent",
+      "department": "Internal Medicine",
+      "required_information": [
+        "temperature reading",
+        "duration of fever",
+        "associated symptoms",
+        "recent travel history",
+        "immunization status"
+      ],
+      "red_flags": [
+        "fever above 103°F (39.4°C)",
+        "fever with stiff neck",
+        "fever with rash",
+        "fever in immunocompromised patient",
+        "fever with difficulty breathing"
+      ],
+      "follow_up_questions": [
+        "What is the highest temperature recorded?",
+        "How long have you had the fever?",
+        "Do you have any other symptoms like cough, headache, or body aches?",
+        "Have you traveled anywhere recently?",
+        "Are you taking any medications for the fever?"
+      ],
+      "reasoning": "General fever assessment based on temperature, duration, and associated symptoms.",
+      "escalation_conditions": [
+        "temperature exceeds 103°F",
+        "fever persists more than 3 days",
+        "immunocompromised patient",
+        "fever with neurological symptoms"
+      ]
+    },
+    {
+      "rule_id": "INJURY-001",
+      "complaint": "injury",
+      "title": "General Injury Assessment",
+      "urgency": "urgent",
+      "department": "Emergency / Trauma",
+      "required_information": [
+        "mechanism of injury",
+        "location of injury",
+        "ability to move affected area",
+        "presence of bleeding",
+        "time since injury"
+      ],
+      "red_flags": [
+        "visible bone or deformity",
+        "uncontrolled bleeding",
+        "loss of sensation or movement",
+        "head injury with confusion",
+        "injury to chest or abdomen"
+      ],
+      "follow_up_questions": [
+        "How did the injury happen?",
+        "Where exactly is the pain?",
+        "Can you move the affected area?",
+        "Is there any bleeding?",
+        "When did the injury occur?"
+      ],
+      "reasoning": "Injury assessment focusing on mechanism, location, and neurovascular status.",
+      "escalation_conditions": [
+        "suspected fracture",
+        "uncontrolled bleeding",
+        "loss of consciousness",
+        "injury to vital areas"
+      ]
+    },
+    {
+      "rule_id": "CHEST-001",
+      "complaint": "chest_pain",
+      "title": "Chest Pain Assessment",
+      "urgency": "urgent",
+      "department": "Emergency / Cardiology",
+      "required_information": [
+        "pain characteristics (sharp, dull, pressure)",
+        "radiation of pain",
+        "associated symptoms",
+        "duration of pain",
+        "cardiac risk factors"
+      ],
+      "red_flags": [
+        "chest pain radiating to arm or jaw",
+        "shortness of breath with chest pain",
+        "sweating and nausea with chest pain",
+        "history of heart disease",
+        "chest pain with dizziness"
+      ],
+      "follow_up_questions": [
+        "Can you describe the pain (sharp, dull, pressure)?",
+        "Does the pain spread to your arm, jaw, or back?",
+        "Are you experiencing shortness of breath?",
+        "Do you feel dizzy or lightheaded?",
+        "Do you have a history of heart problems?"
+      ],
+      "reasoning": "Chest pain requires immediate evaluation to rule out cardiac events.",
+      "escalation_conditions": [
+        "pain radiating to arm/jaw",
+        "associated shortness of breath",
+        "diaphoresis",
+        "known cardiac history"
+      ]
+    },
+    {
+      "rule_id": "BREATH-001",
+      "complaint": "breathing_difficulty",
+      "title": "Breathing Difficulty Assessment",
+      "urgency": "urgent",
+      "department": "Emergency / Pulmonology",
+      "required_information": [
+        "onset of symptoms",
+        "severity of breathlessness",
+        "triggers or alleviating factors",
+        "associated symptoms",
+        "respiratory history"
+      ],
+      "red_flags": [
+        "severe shortness of breath",
+        "cannot speak in full sentences",
+        "blue lips or fingernails",
+        "history of asthma or COPD",
+        "sudden onset of breathlessness"
+      ],
+      "follow_up_questions": [
+        "When did the breathing difficulty start?",
+        "Can you speak in full sentences?",
+        "Do you have a history of asthma or lung disease?",
+        "Are your lips or fingernails discolored?",
+        "Does anything make it better or worse?"
+      ],
+      "reasoning": "Breathing difficulty requires rapid assessment to identify respiratory distress.",
+      "escalation_conditions": [
+        "SpO2 below 94%",
+        "unable to speak in sentences",
+        "cyanosis",
+        "respiratory rate > 30"
+      ]
+    },
+    {
+      "rule_id": "ABDOM-001",
+      "complaint": "abdominal_pain",
+      "title": "Abdominal Pain Assessment",
+      "urgency": "semi-urgent",
+      "department": "Emergency / General Surgery",
+      "required_information": [
+        "location of pain",
+        "onset and duration",
+        "pain characteristics",
+        "associated symptoms",
+        "bowel and urine habits"
+      ],
+      "red_flags": [
+        "severe sudden abdominal pain",
+        "blood in stool or vomit",
+        "rigid abdomen",
+        "fever with abdominal pain",
+        "inability to pass gas or stool"
+      ],
+      "follow_up_questions": [
+        "Where exactly is the pain located?",
+        "When did the pain start?",
+        "Can you describe the pain (cramping, sharp, burning)?",
+        "Have you noticed any blood in your stool or vomit?",
+        "When was your last bowel movement?"
+      ],
+      "reasoning": "Abdominal pain assessment focuses on identifying surgical emergencies.",
+      "escalation_conditions": [
+        "peritoneal signs",
+        "GI bleeding",
+        "suspected appendicitis",
+        "suspected bowel obstruction"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# Patient Intake Triage Assistant - Backend Dependencies
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+google-genai>=1.0.0
+numpy>=1.26.0

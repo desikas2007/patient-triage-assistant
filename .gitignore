@@ -1,0 +1,40 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node.js (frontend dependencies)
+node_modules/
+
+# Build artifacts (except frontend/dist which should be committed)
+# frontend/dist/ is NOT ignored - it must be committed for judging
+
+# Database files (runtime data)
+data/triage.db
+data/triage.db-journal
+data/triage.db-wal
+data/triage.db-shm
+
+# Embeddings cache
+data/embeddings/*.json
+data/embeddings/*.npz
+
+# Logs
+*.log

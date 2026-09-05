@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles for healthcare application */
+@layer base {
+  body {
+    @apply bg-clinical-50 text-clinical-900 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 
+           bg-primary-600 text-white font-medium rounded-clinical
+           hover:bg-primary-700 focus:outline-none focus:ring-2 
+           focus:ring-primary-500 focus:ring-offset-2
+           transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 
+           bg-clinical-100 text-clinical-700 font-medium rounded-clinical
+           border border-clinical-300 hover:bg-clinical-200 
+           focus:outline-none focus:ring-2 focus:ring-clinical-500 
+           focus:ring-offset-2 transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-clinical shadow-clinical border border-clinical-200;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-white border border-clinical-300 
+           rounded-clinical text-clinical-900 placeholder-clinical-400
+           focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:border-primary-500 transition-colors duration-200;
+  }
+  
+  .textarea-field {
+    @apply w-full px-4 py-3 bg-white border border-clinical-300 
+           rounded-clinical text-clinical-900 placeholder-clinical-400
+           focus:outline-none focus:ring-2 focus:ring-primary-500 
+           focus:border-primary-500 transition-colors duration-200
+           resize-none;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-clinical-700 mb-2;
+  }
+  
+  .status-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+  
+  .urgency-immediate {
+    @apply bg-red-100 text-red-800;
+  }
+  
+  .urgency-urgent {
+    @apply bg-orange-100 text-orange-800;
+  }
+  
+  .urgency-semi {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  
+  .urgency-non {
+    @apply bg-green-100 text-green-800;
+  }
+}
