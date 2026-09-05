@@ -450,10 +450,27 @@ class TriageService:
             (r"(?:confus(?:ed|ion)|disoriented)", lambda m: m.group(0)),
         ]
         
+        # Negation detection: look for denial words within the last 60
+        # characters before a match.  This catches phrases like
+        # "no bleeding", "no swelling or bleeding", "without pain", etc.
+        _NEGATION_WORDS = ("no ", "not ", "without ",
+                           "don't ", "doesn't ", "didn't ",
+                           "haven't ", "hasn't ", "never ")
+
         seen_patterns = set()
         for pattern, extractor in symptom_patterns:
             for match in re.finditer(pattern, text_lower):
+                # Check for negation in the preceding context
+                start = match.start()
+                pre_text = text_lower[max(0, start - 60):start]
+                is_negated = any(neg in pre_text for neg in _NEGATION_WORDS)
+
                 symptom = extractor(match).strip()
+
+                # Prefix negated symptoms so downstream code can identify them
+                if is_negated and not symptom.startswith("no "):
+                    symptom = f"no {symptom}"
+
                 # Deduplicate: skip if a more specific version already captured
                 if symptom and symptom not in seen_patterns:
                     # Skip generic "pain" if we already have chest pain or a specific pain

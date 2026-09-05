@@ -33,6 +33,7 @@ SYNONYM_GROUPS = {
                 "sick to stomach"],
     "chest_pain": ["chest pain", "chest discomfort", "chest tightness",
                     "chest pressure", "chest ache"],
+    "confusion": ["confus", "disorient", "altered mental"],
 }
 
 
@@ -235,8 +236,11 @@ class TriageRulesEngine:
         reported_symptoms = facts.get("reported_symptoms", [])
         reported_severity = facts.get("reported_severity")
         reported_duration = facts.get("reported_duration")
-        # Use both extracted symptoms AND original text for red flag matching
-        all_symptom_text = " ".join(reported_symptoms).lower()
+        # Use both extracted symptoms AND original text for red flag matching.
+        # Exclude negated/denied symptoms (prefixed with "no ") from symptom text
+        # so they cannot trigger false red-flag or critical-combination matches.
+        positive_symptoms = [s for s in reported_symptoms if not s.lower().startswith("no ")]
+        all_symptom_text = " ".join(positive_symptoms).lower()
         search_text = all_symptom_text
         if original_text:
             search_text = all_symptom_text + " " + original_text.lower()
@@ -536,6 +540,13 @@ class TriageRulesEngine:
         # Categorize symptoms for clearer evidence presentation
         for s in symptoms:
             s_lower = s.lower()
+            # Negated / denied symptoms are prefixed with "no " by the
+            # extraction layer.  Show them clearly so they are never
+            # confused with positive findings.
+            if s_lower.startswith("no "):
+                denied = s[3:].strip()  # strip the "no " prefix
+                items.append(f"Patient Denied: {denied}")
+                continue
             # Check if this describes radiation or location
             if any(w in s_lower for w in [
                 "spread", "spreading", "radiat", "to arm", "to jaw",
