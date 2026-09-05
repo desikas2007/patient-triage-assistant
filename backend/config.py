@@ -4,17 +4,21 @@ Reads environment variables safely and provides centralized configuration.
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load local .env for development (no-op if missing; Render/Runtime env vars take precedence)
+load_dotenv(BASE_DIR / ".env")
+
 # Database
 DATABASE_URL = f"sqlite:///{BASE_DIR / 'data' / 'triage.db'}"
 DATABASE_PATH = BASE_DIR / "data" / "triage.db"
 
-# Gemini API
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+# Gemini API (secured via environment variable; never hardcode the key)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
 GEMINI_EMBEDDING_MODEL = "gemini-embedding-001"
 
