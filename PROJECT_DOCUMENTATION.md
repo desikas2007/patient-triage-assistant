@@ -171,6 +171,7 @@ Final Triage Note → Frontend
 | **Embeddings** | gemini-embedding-001 | Vector embeddings for semantic rule retrieval |
 | **Vector Operations** | NumPy | Local cosine similarity computation for rule matching |
 | **Rule Storage** | JSON files | Human-readable, version-controlled triage rule definitions |
+| **Environment config** | python-dotenv | Loads `.env` variables safely for local development |
 | **Deployment** | FastAPI static serving | Single-port deployment of frontend + backend |
 
 ---
@@ -303,7 +304,6 @@ patient-triage-assistant/
 ├── requirements.txt              # Python dependencies
 ├── README.md                     # Quick-start guide for judges
 ├── PROJECT_DOCUMENTATION.md      # This document
-├── .env.example                  # Environment variable template
 ├── .gitignore                    # Git ignore rules
 │
 ├── backend/
@@ -1310,7 +1310,7 @@ For production deployment, the following would be needed:
 | **Local database** | SQLite file-based, no network exposure | Implemented |
 | **Prompt injection defense** | Patient text treated as untrusted in all Gemini prompts | Implemented |
 | **Frontend/backend separation** | API layer cleanly separated from UI | Implemented |
-| **.env.example provided** | Template file shows required variables without exposing keys | Implemented |
+| **Environment variable documentation** | README documents required variables without exposing keys | Implemented |
 | **Runtime database gitignored** | No patient data in repository | Implemented |
 | **Role-based access control** | Not implemented — prototype has no authentication | Not implemented |
 | **TLS/HTTPS** | Not configured — prototype runs on HTTP | Not implemented |
@@ -1332,13 +1332,14 @@ For production deployment, the following would be needed:
 |----------|----------|-------------|
 | `GEMINI_API_KEY` | No | Google Gemini API key for AI-powered extraction and embeddings |
 | `GEMINI_MODEL` | No | Override Gemini model (default: `gemini-2.0-flash`) |
+| `PORT` | No | HTTP port to run on (default: `8000`). Set automatically by hosting platforms such as Render |
 
 ### Secret Handling
 
 - **Storage:** Environment variables (via `.env` file or system environment)
 - **Source code:** No API keys are hardcoded in any source file
-- **`.env` ignored:** The `.gitignore` file excludes `.env` and `.env.local`
-- **`.env.example` provided:** Contains placeholder text only, not real keys
+- **`.env` ignored:** The `.gitignore` file excludes `.env` and all `.env.*` files
+- **Key placeholder documented:** The README shows the `GEMINI_API_KEY=your_api_key_here` placeholder rather than a real key
 - **Frontend exposure:** API keys are never sent to the browser
 - **README disclosure:** The README instructs users to create a `.env` file but does not contain any real key values
 
@@ -1543,6 +1544,7 @@ pip install -r requirements.txt
 | pydantic | >= 2.5.0 |
 | google-genai | >= 1.0.0 |
 | numpy | >= 1.26.0 |
+| python-dotenv | >= 1.0.0 |
 
 ### Start the Application
 
@@ -1571,9 +1573,13 @@ Create a `.env` file (optional):
 
 ```
 GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.0-flash
+PORT=8000
 ```
 
 Without a Gemini API key, the application works using rule-based fallbacks for fact extraction, missing info detection, and follow-up question generation.
+
+The server host is `0.0.0.0` and the port defaults to `8000`. The `PORT` environment variable overrides the port (set automatically by hosting platforms such as Render).
 
 ### One Command Starts Everything
 
@@ -1595,7 +1601,7 @@ Without a Gemini API key, the application works using rule-based fallbacks for f
 | `__pycache__/` ignored | ✅ | Listed in `.gitignore` |
 | Runtime database ignored | ✅ | `data/triage.db*` files listed in `.gitignore` |
 | Embedding cache ignored | ✅ | `data/embeddings/*.json` and `*.npz` listed in `.gitignore` |
-| `.env.example` only has placeholder | ✅ | Contains `your_api_key_here` |
+| No real API key in documentation | ✅ | README shows `your_api_key_here` placeholder only |
 
 ---
 
