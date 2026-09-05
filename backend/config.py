@@ -24,7 +24,7 @@ GEMINI_EMBEDDING_MODEL = "gemini-embedding-001"
 
 # Server
 HOST = "0.0.0.0"
-PORT = 8000
+PORT = int(os.getenv("PORT", "8000"))  # Render sets PORT; local fallback is 8000
 
 # Retrieval
 EMBEDDINGS_DIR = BASE_DIR / "data" / "embeddings"
