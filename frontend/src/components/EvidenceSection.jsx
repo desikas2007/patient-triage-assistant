@@ -12,10 +12,12 @@ export default function EvidenceSection({ reported, established, unknown }) {
             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
         </svg>
       ),
-      bgColor: 'bg-blue-50',
-      borderColor: 'border-blue-200',
-      titleColor: 'text-blue-800',
-      itemColor: 'text-blue-700',
+      gradient: 'from-blue-500 to-cyan-500',
+      bg: 'bg-blue-50/60',
+      border: 'border-blue-100/60',
+      titleColor: 'text-blue-700',
+      itemColor: 'text-blue-600',
+      dotColor: 'bg-blue-400',
     },
     {
       title: 'Follow-up Established',
@@ -27,10 +29,12 @@ export default function EvidenceSection({ reported, established, unknown }) {
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      titleColor: 'text-green-800',
-      itemColor: 'text-green-700',
+      gradient: 'from-green-500 to-emerald-500',
+      bg: 'bg-green-50/60',
+      border: 'border-green-100/60',
+      titleColor: 'text-green-700',
+      itemColor: 'text-green-600',
+      dotColor: 'bg-green-400',
     },
     {
       title: 'Still Unknown',
@@ -42,16 +46,18 @@ export default function EvidenceSection({ reported, established, unknown }) {
             d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      bgColor: 'bg-amber-50',
-      borderColor: 'border-amber-200',
-      titleColor: 'text-amber-800',
-      itemColor: 'text-amber-700',
+      gradient: 'from-amber-500 to-orange-500',
+      bg: 'bg-amber-50/60',
+      border: 'border-amber-100/60',
+      titleColor: 'text-amber-700',
+      itemColor: 'text-amber-600',
+      dotColor: 'bg-amber-400',
     },
   ]
 
   return (
-    <div className="card p-6 md:p-8">
-      <h2 className="text-xl font-semibold text-clinical-900 mb-4">
+    <div className="card p-6 md:p-8 animate-fade-in">
+      <h2 className="text-xl font-semibold text-gray-900 mb-5">
         Evidence Summary
       </h2>
 
@@ -59,33 +65,35 @@ export default function EvidenceSection({ reported, established, unknown }) {
         {sections.map((section) => (
           <div
             key={section.title}
-            className={`${section.bgColor} border ${section.borderColor} rounded-clinical p-4`}
+            className={`${section.bg} backdrop-blur-sm border ${section.border} rounded-2xl p-5`}
           >
-            <div className="flex items-center space-x-2 mb-3">
-              <span className={section.titleColor}>{section.icon}</span>
+            <div className="flex items-center space-x-2.5 mb-3">
+              <div className={`w-7 h-7 bg-gradient-to-br ${section.gradient} rounded-lg flex items-center justify-center text-white shadow-sm`}>
+                {section.icon}
+              </div>
               <h3 className={`text-sm font-semibold ${section.titleColor}`}>
                 {section.title}
               </h3>
             </div>
 
-            <p className="text-xs text-clinical-500 mb-3">
+            <p className="text-xs text-gray-400 mb-3">
               {section.description}
             </p>
 
             {section.items.length > 0 ? (
-              <ul className="space-y-1.5">
+              <ul className="space-y-2">
                 {section.items.map((item, idx) => (
                   <li
                     key={idx}
-                    className={`text-sm ${section.itemColor} flex items-start space-x-1.5`}
+                    className={`text-sm ${section.itemColor} flex items-start space-x-2`}
                   >
-                    <span className="flex-shrink-0 mt-1.5 w-1 h-1 rounded-full bg-current opacity-40"></span>
-                    <span>{item}</span>
+                    <span className={`flex-shrink-0 mt-1.5 w-1.5 h-1.5 rounded-full ${section.dotColor}`}></span>
+                    <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-xs text-clinical-400 italic">
+              <p className="text-xs text-gray-400 italic">
                 None recorded
               </p>
             )}

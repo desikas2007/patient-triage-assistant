@@ -8,47 +8,60 @@
     @apply bg-clinical-50 text-clinical-900 antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Custom component styles */
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center px-6 py-3 
-           bg-primary-600 text-white font-medium rounded-clinical
-           hover:bg-primary-700 focus:outline-none focus:ring-2 
-           focus:ring-primary-500 focus:ring-offset-2
-           transition-colors duration-200;
+           bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-medium 
+           rounded-2xl shadow-md shadow-teal-500/20
+           hover:shadow-lg hover:shadow-teal-500/30 
+           hover:from-teal-600 hover:to-emerald-600
+           focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2
+           transition-all duration-200;
   }
   
   .btn-secondary {
     @apply inline-flex items-center justify-center px-6 py-3 
-           bg-clinical-100 text-clinical-700 font-medium rounded-clinical
-           border border-clinical-300 hover:bg-clinical-200 
-           focus:outline-none focus:ring-2 focus:ring-clinical-500 
-           focus:ring-offset-2 transition-colors duration-200;
+           bg-white/70 backdrop-blur-sm text-gray-700 font-medium rounded-2xl
+           border border-gray-200/60 shadow-sm
+           hover:bg-white/90 hover:shadow-md
+           focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 
+           transition-all duration-200;
   }
   
   .card {
-    @apply bg-white rounded-clinical shadow-clinical border border-clinical-200;
+    @apply bg-white/60 backdrop-blur-md rounded-2xl shadow-glass 
+           border border-white/50;
+  }
+  
+  .card-solid {
+    @apply bg-white rounded-2xl shadow-glass border border-gray-100;
   }
   
   .input-field {
-    @apply w-full px-4 py-3 bg-white border border-clinical-300 
-           rounded-clinical text-clinical-900 placeholder-clinical-400
-           focus:outline-none focus:ring-2 focus:ring-primary-500 
-           focus:border-primary-500 transition-colors duration-200;
+    @apply w-full px-4 py-3 bg-white/80 backdrop-blur-sm border border-gray-200/60 
+           rounded-xl text-gray-900 placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-teal-500/40 
+           focus:border-teal-400 transition-all duration-200;
   }
   
   .textarea-field {
-    @apply w-full px-4 py-3 bg-white border border-clinical-300 
-           rounded-clinical text-clinical-900 placeholder-clinical-400
-           focus:outline-none focus:ring-2 focus:ring-primary-500 
-           focus:border-primary-500 transition-colors duration-200
+    @apply w-full px-4 py-3 bg-white/80 backdrop-blur-sm border border-gray-200/60 
+           rounded-xl text-gray-900 placeholder-gray-400
+           focus:outline-none focus:ring-2 focus:ring-teal-500/40 
+           focus:border-teal-400 transition-all duration-200
            resize-none;
   }
   
   .label {
-    @apply block text-sm font-medium text-clinical-700 mb-2;
+    @apply block text-sm font-medium text-gray-700 mb-2;
   }
   
   .status-badge {
@@ -70,4 +83,72 @@
   .urgency-non {
     @apply bg-green-100 text-green-800;
   }
+
+  /* Glassmorphism utility classes */
+  .glass {
+    @apply bg-white/50 backdrop-blur-md border border-white/50;
+  }
+
+  .glass-strong {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+  }
+
+  .glass-subtle {
+    @apply bg-white/30 backdrop-blur-sm border border-white/40;
+  }
+
+  /* Section transitions */
+  .section-enter {
+    @apply animate-fade-in;
+  }
+
+  /* Urgency badge styles */
+  .urgency-badge {
+    @apply inline-flex items-center px-4 py-2 rounded-2xl font-semibold text-sm;
+  }
+
+  .urgency-badge-immediate {
+    @apply bg-red-100/80 text-red-800 border border-red-200/60;
+  }
+
+  .urgency-badge-urgent {
+    @apply bg-orange-100/80 text-orange-800 border border-orange-200/60;
+  }
+
+  .urgency-badge-semi-urgent {
+    @apply bg-yellow-100/80 text-yellow-800 border border-yellow-200/60;
+  }
+
+  .urgency-badge-non-urgent {
+    @apply bg-green-100/80 text-green-800 border border-green-200/60;
+  }
+
+  /* Evidence section styles */
+  .evidence-card {
+    @apply bg-white/50 backdrop-blur-sm rounded-2xl border border-white/50 p-4;
+  }
+}
+
+/* Custom scrollbar for a polished feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(20, 184, 166, 0.2);
+  color: #0f172a;
 }

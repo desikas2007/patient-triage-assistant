@@ -45,10 +45,10 @@ export default {
           900: '#0f172a',
         },
         urgency: {
-          immediate: '#dc2626',  // Red
-          urgent: '#ea580c',     // Orange
-          semi: '#ca8a04',       // Yellow
-          non: '#16a34a',        // Green
+          immediate: '#dc2626',
+          urgent: '#ea580c',
+          semi: '#ca8a04',
+          non: '#16a34a',
         },
       },
       fontFamily: {
@@ -58,9 +58,34 @@ export default {
         'clinical': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
         'clinical-md': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         'clinical-lg': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        'glass': '0 8px 32px 0 rgb(0 0 0 / 0.06)',
+        'glass-lg': '0 8px 32px 0 rgb(0 0 0 / 0.1)',
+        'glass-xl': '0 16px 48px 0 rgb(0 0 0 / 0.12)',
       },
       borderRadius: {
         'clinical': '0.5rem',
+      },
+      backdropBlur: {
+        'xs': '2px',
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.3s ease-out',
+        'slide-up': 'slideUp 0.4s ease-out',
+        'slide-in-right': 'slideInRight 0.3s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(-10px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
       },
     },
   },

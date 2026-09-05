@@ -29,14 +29,24 @@ export default function PatientIntake({ onSubmit, isLoading }) {
   }
 
   return (
-    <div className="card p-6 md:p-8">
+    <div className="card p-6 md:p-8 animate-fade-in">
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold text-clinical-900 mb-2">
-          Patient Intake
-        </h2>
-        <p className="text-clinical-600">
-          Describe the patient's situation in your own words.
-        </p>
+        <div className="flex items-center space-x-3 mb-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-md shadow-teal-500/20">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Patient Intake
+            </h2>
+            <p className="text-sm text-gray-500">
+              Describe the patient's situation in your own words.
+            </p>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -55,7 +65,7 @@ export default function PatientIntake({ onSubmit, isLoading }) {
             disabled={isLoading}
             required
           />
-          <p className="mt-2 text-sm text-clinical-500">
+          <p className="mt-2 text-xs text-gray-400">
             Press Ctrl+Enter to submit
           </p>
         </div>
